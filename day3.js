@@ -1,18 +1,15 @@
 import fs from 'fs'
 
-var array = fs.readFileSync('./input/testing.txt').toString().split("\n")
+var array = fs.readFileSync('./input/day3.txt').toString().split("\n")
 
 var gamma = findMostCommonBits(array)
 var epsilon = reverseBits(gamma)
 
-// var oxygenRating = selectByBitCriteria(array, "Oxygen")
+var oxygenRating = selectByBitCriteria(array, "Oxygen")
 var co2Rating = selectByBitCriteria(array, "CO2")
 
 console.log("Power consumption: " + parseInt(gamma, 2) * parseInt(epsilon, 2))
-// console.log("Lifesupport rating: " + parseInt(oxygenRating, 2) * parseInt(co2Rating, 2))
-
-// console.log("OXYGEN: " + oxygenRating)
-console.log("CO2: " + co2Rating)
+console.log("Lifesupport rating: " + parseInt(oxygenRating, 2) * parseInt(co2Rating, 2))
 
 function findMostCommonBits(array){
     var mostCommonBits = ""
@@ -25,41 +22,29 @@ function findMostCommonBits(array){
 }
 
 function selectByBitCriteria(array, type){
-    var newArray = array
-    
+    var newArray = []
+    for(var i in array)
+        newArray[i] = array[i]
+
     for(var i in newArray[0].trim()){
         var mostCommonBit = findMostCommonBit(newArray, i)
-        if(mostCommonBit == 2)
-            mostCommonBit = 1
+        var deleteList = []
 
         for(var j in newArray){
-            switch(type){
-                case 'Oxygen':
-                    // newArray = newArray.filter((value, i) => {
-                    //     return value[i] == mostCommonBit
-                    // })
-                    if(newArray[j][i] != mostCommonBit)
-                        newArray.splice(j, 1)
-                    break
-                case 'CO2':
-                    // newArray = newArray.filter((value, i) => {
-                    //     return value[i] == leastCommonBit
-                    // })
-                    if(newArray[j][i] == mostCommonBit)
-                        newArray.splice(j, 1)
-                    break
-                default:
-                    return
+            if((newArray[j][i] != mostCommonBit && type == "Oxygen") || (newArray[j][i] == mostCommonBit && type == "CO2")){
+                deleteList.push(j)
             }
         }
 
-        console.log(newArray)
+        for(var i = deleteList.length-1; i >= 0; i--){
+            newArray.splice(deleteList[i], 1)
+        }
 
-        if(newArray.length <= 1)
+        if(newArray.length == 1)
             break
     }
 
-    return newArray[0]
+    return newArray
 }
 
 function findMostCommonBit(array, i){
@@ -78,10 +63,8 @@ function findMostCommonBit(array, i){
 
     if(zeroCount > oneCount)
         return 0
-    else if(zeroCount < oneCount)
-        return 1
     else
-        return 2
+        return 1
 }
 
 function reverseBits(number){
