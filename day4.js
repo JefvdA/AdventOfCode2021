@@ -2,9 +2,11 @@ import fs from 'fs'
 
 var array = fs.readFileSync('./input/day4.txt').toString().split("\n")
 
+// Constants
+const markedNumber = -1
+
 // Find chosen numbers
 var numbersString = array[0].trim()
-//  + array[1].trim()
 var numbers = numbersString.split(',')
 
 // Create boards
@@ -42,12 +44,12 @@ for(var i in numbers){
                 var number = row[numberIndex]
                 
                 if(number == chosenNumber){
-                    row.splice(numberIndex, 1)
+                    row[numberIndex] = markedNumber
                     break
                 }
             }
 
-            if(row.length == 0){
+            if(VerifyWinner(board)){
                 winnerExists = true
                 winningNumber = number
                 break
@@ -67,18 +69,56 @@ for(var i in numbers){
                 for(var numberIndex in row){
                     var number = row[numberIndex]
 
-                    sumUnmarked += parseInt(number)                    
+                    if(number != markedNumber)
+                        sumUnmarked += parseInt(number)                    
                 }
             }
 
-            score = sumUnmarked * parseInt(chosenNumber)
+            score = sumUnmarked * parseInt(winningNumber)
 
             console.log("Board nr " + boardIndex + " has won, last number was " + winningNumber)
             console.log("That with a score of " + score)
+
             break
         }
     }
 
     if(winnerExists)
         break
+}
+
+function VerifyWinner(board){
+    for(var rowIndex in board){
+        var row = board[rowIndex]
+
+        if(VerifyNumbers(row))
+            return true
+    }
+
+    for(var numberIndex in board[0]){
+        var numbers = []
+
+        for(var rowIndex in board){
+            var row = board[rowIndex]
+
+            numbers.push(row[numberIndex])
+        }
+
+        if(VerifyNumbers(numbers))
+            return true
+    }
+    return false
+}
+
+function VerifyNumbers(numbers){
+    var result = true
+    for(var numberIndex in numbers){
+        var number = numbers[numberIndex]
+
+        if(number != markedNumber){
+            result = false
+            break
+        }
+    }
+    return result
 }
