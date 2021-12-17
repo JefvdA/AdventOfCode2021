@@ -1,33 +1,32 @@
 import { Console } from 'console'
 import fs from 'fs'
 
-var array = fs.readFileSync('./input/testing.txt').toString().split("\n")
+var array = fs.readFileSync('./input/day8.txt').toString().split("\n")
 
-// var uniqueCount = 0
-// for(var lineIndex in array){
-//     var line = array[lineIndex]
-//     var output = line.split("|")[1].trim().split(' ')
+var uniqueCount = 0
+for(var lineIndex in array){
+    var line = array[lineIndex]
+    var output = line.split("|")[1].trim().split(' ')
 
-//     for(var numberIndex in output){
-//         var number = output[numberIndex]
-//         if(number.length == 2 || number.length == 4 || number.length == 3 || number.length == 7)
-//             uniqueCount++
-//     }
-// }
-// console.log("Times 1 4 7 8 appear in the output: " + uniqueCount)
+    for(var numberIndex in output){
+        var number = output[numberIndex]
+        if(number.length == 2 || number.length == 4 || number.length == 3 || number.length == 7)
+            uniqueCount++
+    }
+}
+console.log("Times 1 4 7 8 appear in the output: " + uniqueCount)
 
-var output = []
+var sum = 0
 for(var lineIndex in array){
     var line = array[lineIndex]
     var wiring = line.split("|")[0].trim().split(' ')
     var output = line.split("|")[1].trim().split(' ')
-    console.log("Wiring: " + wiring)
 
     var wireArray = ['', '', '', '', '', '', '', '', '', '']
 
     // find 1 4 7 8
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         switch(length){
@@ -48,7 +47,7 @@ for(var lineIndex in array){
 
     // find 6
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 6){
@@ -58,7 +57,7 @@ for(var lineIndex in array){
     }
     // find 0
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 6){
@@ -68,7 +67,7 @@ for(var lineIndex in array){
     }
     // find 9
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 6){
@@ -80,7 +79,7 @@ for(var lineIndex in array){
 
     // find 2
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 5){
@@ -90,7 +89,7 @@ for(var lineIndex in array){
     }
     // find 5
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 5){
@@ -100,7 +99,7 @@ for(var lineIndex in array){
     }
     // find 3
     for(var numberIndex in wiring){
-        var number = wiring[numberIndex]
+        var number = sortString(wiring[numberIndex])
         var length = number.length
 
         if(length == 5){
@@ -108,14 +107,17 @@ for(var lineIndex in array){
                 wireArray[3] = number
         }
     }
-    console.log("WireArray: " + wireArray)
 
     // get output
-    // var convertedOutput = []
-    // for(var numberIndex in output){
-    // }
-    // console.log(convertedOutput)
+    var convertedOutput = []
+    for(var numberIndex in output){
+        var index = wireArray.indexOf(sortString(output[numberIndex]))
+        convertedOutput.push(index)
+    }
+    console.log(convertedOutput)
+    sum += parseInt(convertedOutput.join(''), 10)
 }
+console.log(sum)
 
 function getSameCount(str1, str2) {
     let count = 0
