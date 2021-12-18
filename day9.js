@@ -26,25 +26,6 @@ class Point {
 }
 
 
-// PART 1
-// Loop through grid to find low points
-var riskLevel = 0
-for(var y = 0; y < grid.length; y++){
-    for(var x = 0; x < grid[y].length; x++){
-        var number = grid[y][x]
-        var left = grid[y][x-1]
-        var right = grid[y][x+1]
-        var up = grid[y-1] != undefined ? grid[y-1][x] : undefined
-        var down = grid[y+1] != undefined ? grid[y+1][x] : undefined
-
-        if((left > number || left == undefined) && (right > number || right == undefined) && (up > number || up == undefined) && (down > number || down == undefined)){
-            riskLevel += parseInt(number)+1
-        }
-    }
-}
-console.log("The total risklevel for the caves is " + riskLevel)
-
-// PART 2
 // Find low points
 var lowPoints = []
 for(var y = 0; y < grid.length; y++){
@@ -61,6 +42,18 @@ for(var y = 0; y < grid.length; y++){
     }
 }
 
+
+// PART 1
+// Loop through grid to find low points
+var riskLevel = 0
+for(var pointIndex in lowPoints){
+    var point = lowPoints[pointIndex]
+
+    riskLevel += parseInt(lowPoints[pointIndex].getNumber(), 10) + 1
+}
+console.log("The total risklevel for the caves is " + riskLevel)
+
+// PART 2
 // Find 3 biggest basins
 var basins = []
 for(var pointIndex in lowPoints){
