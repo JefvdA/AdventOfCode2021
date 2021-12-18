@@ -1,4 +1,3 @@
-import { Console } from 'console'
 import fs from 'fs'
 
 var array = fs.readFileSync('./input/day8.txt').toString().split("\n")
